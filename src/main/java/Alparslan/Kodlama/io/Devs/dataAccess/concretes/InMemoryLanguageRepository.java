@@ -15,14 +15,39 @@ public class InMemoryLanguageRepository implements LanguageRepository {
 
 	public InMemoryLanguageRepository() {
 		languages = new ArrayList<Language>();
-		languages.add(new Language(1, "C#"));
-		languages.add(new Language(2, "Java"));
-		languages.add(new Language(3, "Python"));
+		languages.add(new Language(0, "C#"));
+		languages.add(new Language(1, "Java"));
+		languages.add(new Language(2, "Python"));
 	}
 
 	@Override
 	public List<Language> getAll() {
 		return languages;
+	}
+
+	@Override
+	public void add(Language language) {
+		for (Language tempLanguage : languages) {
+			if (tempLanguage.getName() == language.getName()) {
+				System.out.println("Language name already exist");
+			}
+		}
+		languages.add(language);
+	}
+
+	@Override
+	public void delete(Language language) {
+		languages.remove(language);
+	}
+
+	@Override
+	public void update(Language exLanguage, Language newLanguage) {
+		languages.set(exLanguage.getId(), newLanguage);
+	}
+
+	@Override
+	public Language getById(int id) {
+		return languages.get(id);
 	}
 
 }
