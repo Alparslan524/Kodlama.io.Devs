@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import Alparslan.Kodlama.io.Devs.business.abstracts.LanguageService;
 import Alparslan.Kodlama.io.Devs.business.requests.CreateLanguageRequest;
 import Alparslan.Kodlama.io.Devs.business.responses.GetAllLanguageResponse;
-import Alparslan.Kodlama.io.Devs.business.responses.GetByIdLanguageResponse;
 import Alparslan.Kodlama.io.Devs.entities.concretes.Language;
 
 @RestController
@@ -44,7 +43,7 @@ public class LanguagesController {
 	}
 
 	@GetMapping("getbyid")
-	public GetByIdLanguageResponse getById(int id) {
+	public GetAllLanguageResponse getById(int id) {
 		return languageService.getById(id);
 	}
 }

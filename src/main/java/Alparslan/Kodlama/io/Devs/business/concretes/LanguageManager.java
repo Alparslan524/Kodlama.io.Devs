@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import Alparslan.Kodlama.io.Devs.business.abstracts.LanguageService;
 import Alparslan.Kodlama.io.Devs.business.requests.CreateLanguageRequest;
 import Alparslan.Kodlama.io.Devs.business.responses.GetAllLanguageResponse;
-import Alparslan.Kodlama.io.Devs.business.responses.GetByIdLanguageResponse;
 import Alparslan.Kodlama.io.Devs.dataAccess.abstracts.LanguageRepository;
 import Alparslan.Kodlama.io.Devs.entities.concretes.Language;
 
@@ -45,11 +44,6 @@ public class LanguageManager implements LanguageService {
 	@Override
 	public void delete(int id) {
 		languageRepository.deleteById(id);
-		/*
-		 * List<Language> languages = languageRepository.findAll(); for (Language
-		 * languageItem : languages) { if (languageItem.getName() == language.getName())
-		 * { languageRepository.deleteById(language.getId()); } }
-		 */
 	}
 
 	@Override
@@ -59,9 +53,9 @@ public class LanguageManager implements LanguageService {
 	}
 
 	@Override
-	public GetByIdLanguageResponse getById(int id) {
+	public GetAllLanguageResponse getById(int id) {
 		List<Language> languages = languageRepository.findAll();
-		GetByIdLanguageResponse languagesResponse = new GetByIdLanguageResponse();
+		GetAllLanguageResponse languagesResponse = new GetAllLanguageResponse();
 		for (Language language : languages) {
 			if (language.getId() == id) {
 				languagesResponse.setId(language.getId());
