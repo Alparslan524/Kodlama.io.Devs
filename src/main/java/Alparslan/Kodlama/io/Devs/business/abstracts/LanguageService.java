@@ -2,17 +2,20 @@ package Alparslan.Kodlama.io.Devs.business.abstracts;
 
 import java.util.List;
 
+import Alparslan.Kodlama.io.Devs.business.requests.CreateLanguageRequest;
+import Alparslan.Kodlama.io.Devs.business.responses.GetAllLanguageResponse;
+import Alparslan.Kodlama.io.Devs.business.responses.GetByIdLanguageResponse;
 import Alparslan.Kodlama.io.Devs.entities.concretes.Language;
 
 public interface LanguageService {
 
-	public List<Language> getAll();
+	public List<GetAllLanguageResponse> getAll();
 
-	public void add(Language language);
+	public void add(CreateLanguageRequest createLanguageRequest);
 
-	public void delete(Language language);
+	public void delete(int id);
 
 	public void update(Language exLanguage, Language newLanguage);
 
-	public Language getById(int id);
+	public GetByIdLanguageResponse getById(int id);
 }
