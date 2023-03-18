@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class GetAllFrameWorksResponse {
 	private int id;
 	private String name;
+	private int languageId;
 }

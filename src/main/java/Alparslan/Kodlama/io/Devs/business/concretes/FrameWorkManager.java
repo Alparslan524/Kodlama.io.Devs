@@ -9,15 +9,19 @@ import Alparslan.Kodlama.io.Devs.business.abstracts.FrameWorkService;
 import Alparslan.Kodlama.io.Devs.business.requests.CreateFrameWorkRequest;
 import Alparslan.Kodlama.io.Devs.business.responses.GetAllFrameWorksResponse;
 import Alparslan.Kodlama.io.Devs.dataAccess.abstracts.FrameWorkRepository;
+import Alparslan.Kodlama.io.Devs.dataAccess.abstracts.LanguageRepository;
 import Alparslan.Kodlama.io.Devs.entities.concretes.FrameWork;
+import Alparslan.Kodlama.io.Devs.entities.concretes.Language;
 
 @Service
 public class FrameWorkManager implements FrameWorkService {
 
 	private FrameWorkRepository frameWorkRepository;
+	private LanguageRepository languageRepository;
 
-	public FrameWorkManager(FrameWorkRepository frameWorkRepository) {
+	public FrameWorkManager(FrameWorkRepository frameWorkRepository, LanguageRepository languageRepository) {
 		this.frameWorkRepository = frameWorkRepository;
+		this.languageRepository = languageRepository;
 	}
 
 	@Override
@@ -28,6 +32,7 @@ public class FrameWorkManager implements FrameWorkService {
 			GetAllFrameWorksResponse responseItem = new GetAllFrameWorksResponse();
 			responseItem.setId(frameWork.getId());
 			responseItem.setName(frameWork.getName());
+			responseItem.setLanguageId(frameWork.getLanguage().getId());
 			frameWorksResponse.add(responseItem);
 		}
 		return frameWorksResponse;
@@ -37,6 +42,11 @@ public class FrameWorkManager implements FrameWorkService {
 	public void add(CreateFrameWorkRequest createFrameWorkRequest) {
 		FrameWork frameWork = new FrameWork();
 		frameWork.setName(createFrameWorkRequest.getName());
+		for (Language language : languageRepository.findAll()) {
+			if (createFrameWorkRequest.getLanguageId() == language.getId()) {
+				frameWork.setLanguage(language);
+			}
+		}
 		frameWorkRepository.save(frameWork);
 	}
 
