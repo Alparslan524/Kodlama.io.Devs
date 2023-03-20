@@ -3,8 +3,9 @@ package Alparslan.Kodlama.io.Devs.business.abstracts;
 import java.util.List;
 
 import Alparslan.Kodlama.io.Devs.business.requests.CreateLanguageRequest;
+import Alparslan.Kodlama.io.Devs.business.requests.UpdateLanguageRequest;
 import Alparslan.Kodlama.io.Devs.business.responses.GetAllLanguageResponse;
-import Alparslan.Kodlama.io.Devs.entities.concretes.Language;
+import Alparslan.Kodlama.io.Devs.business.responses.GetByIdLanguageResponse;
 
 public interface LanguageService {
 
@@ -14,7 +15,7 @@ public interface LanguageService {
 
 	public void delete(int id);
 
-	public void update(Language exLanguage, Language newLanguage);
+	public void update(UpdateLanguageRequest updateLanguageRequest);
 
-	public GetAllLanguageResponse getById(int id);
+	public GetByIdLanguageResponse getById(int id);
 }
