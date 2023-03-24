@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetByIdLanguageResponse {
+public class GetByIdFrameWorksResponse {
 	private int id;
 	private String name;
+	private String languageName;
 }

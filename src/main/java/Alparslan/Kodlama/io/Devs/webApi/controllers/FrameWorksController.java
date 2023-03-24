@@ -2,16 +2,21 @@ package Alparslan.Kodlama.io.Devs.webApi.controllers;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import Alparslan.Kodlama.io.Devs.business.abstracts.FrameWorkService;
 import Alparslan.Kodlama.io.Devs.business.requests.CreateFrameWorkRequest;
+import Alparslan.Kodlama.io.Devs.business.requests.UpdateFrameWorkRequest;
 import Alparslan.Kodlama.io.Devs.business.responses.GetAllFrameWorksResponse;
-import Alparslan.Kodlama.io.Devs.entities.concretes.FrameWork;
+import Alparslan.Kodlama.io.Devs.business.responses.GetByIdFrameWorksResponse;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("api/frameworks")
@@ -22,28 +27,28 @@ public class FrameWorksController {
 		this.frameWorkService = frameWorkService;
 	}
 
-	@GetMapping("/getall")
+	@GetMapping
 	List<GetAllFrameWorksResponse> getAll() {
 		return frameWorkService.getAll();
 	}
 
-	@PostMapping("/add")
-	public void add(@RequestBody CreateFrameWorkRequest createFrameWorkRequest) {
+	@PostMapping
+	public void add(@RequestBody @Valid CreateFrameWorkRequest createFrameWorkRequest) {
 		frameWorkService.add(createFrameWorkRequest);
 	}
 
-	@PostMapping("/delete")
-	public void delete(int id) {
+	@DeleteMapping("/{id}")
+	public void delete(@RequestBody @PathVariable int id) {
 		frameWorkService.delete(id);
 	}
 
-	@PostMapping("/update")
-	public void update(@RequestBody FrameWork exFrameWork, FrameWork newFrameWork) {
-		frameWorkService.update(exFrameWork, newFrameWork);
+	@PutMapping()
+	public void update(@RequestBody @Valid UpdateFrameWorkRequest updateFrameWorkRequest) {
+		frameWorkService.update(updateFrameWorkRequest);
 	}
 
-	@GetMapping("getbyid")
-	public GetAllFrameWorksResponse getById(int id) {
+	@GetMapping("/{id}")
+	public GetByIdFrameWorksResponse getById(@PathVariable int id) {
 		return frameWorkService.getById(id);
 	}
 

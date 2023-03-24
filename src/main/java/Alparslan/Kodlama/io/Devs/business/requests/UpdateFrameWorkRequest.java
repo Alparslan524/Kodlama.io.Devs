@@ -10,11 +10,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateLanguageRequest {
+public class UpdateFrameWorkRequest {
 	@NotNull
 	private int id;
 	@NotNull
 	@NotBlank
 	@Size(min = 1, max = 20)
 	private String name;
+	@NotNull
+	private int languageId;
 }

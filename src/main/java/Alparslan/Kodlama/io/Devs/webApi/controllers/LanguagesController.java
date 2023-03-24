@@ -18,6 +18,7 @@ import Alparslan.Kodlama.io.Devs.business.requests.CreateLanguageRequest;
 import Alparslan.Kodlama.io.Devs.business.requests.UpdateLanguageRequest;
 import Alparslan.Kodlama.io.Devs.business.responses.GetAllLanguageResponse;
 import Alparslan.Kodlama.io.Devs.business.responses.GetByIdLanguageResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -38,7 +39,7 @@ public class LanguagesController {
 
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public void add(@RequestBody CreateLanguageRequest createLanguageRequest) {
+	public void add(@RequestBody @Valid CreateLanguageRequest createLanguageRequest) {
 		languageService.add(createLanguageRequest);
 	}
 
@@ -48,7 +49,7 @@ public class LanguagesController {
 	}
 
 	@PutMapping
-	public void update(@RequestBody UpdateLanguageRequest updateLanguageRequest) {
+	public void update(@RequestBody @Valid UpdateLanguageRequest updateLanguageRequest) {
 		languageService.update(updateLanguageRequest);
 	}
 

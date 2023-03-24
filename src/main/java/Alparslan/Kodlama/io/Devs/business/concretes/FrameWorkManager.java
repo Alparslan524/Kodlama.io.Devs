@@ -1,52 +1,42 @@
 package Alparslan.Kodlama.io.Devs.business.concretes;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import Alparslan.Kodlama.io.Devs.business.abstracts.FrameWorkService;
 import Alparslan.Kodlama.io.Devs.business.requests.CreateFrameWorkRequest;
+import Alparslan.Kodlama.io.Devs.business.requests.UpdateFrameWorkRequest;
 import Alparslan.Kodlama.io.Devs.business.responses.GetAllFrameWorksResponse;
+import Alparslan.Kodlama.io.Devs.business.responses.GetByIdFrameWorksResponse;
+import Alparslan.Kodlama.io.Devs.business.rules.FrameWorkBusinessRules;
+import Alparslan.Kodlama.io.Devs.core.utilities.mappers.abstracts.ModelMapperService;
 import Alparslan.Kodlama.io.Devs.dataAccess.abstracts.FrameWorkRepository;
-import Alparslan.Kodlama.io.Devs.dataAccess.abstracts.LanguageRepository;
 import Alparslan.Kodlama.io.Devs.entities.concretes.FrameWork;
-import Alparslan.Kodlama.io.Devs.entities.concretes.Language;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class FrameWorkManager implements FrameWorkService {
 
 	private FrameWorkRepository frameWorkRepository;
-	private LanguageRepository languageRepository;
-
-	public FrameWorkManager(FrameWorkRepository frameWorkRepository, LanguageRepository languageRepository) {
-		this.frameWorkRepository = frameWorkRepository;
-		this.languageRepository = languageRepository;
-	}
-
+	private ModelMapperService mapperService;
+	private FrameWorkBusinessRules frameWorkBusinessRules;
+	
 	@Override
 	public List<GetAllFrameWorksResponse> getAll() {
 		List<FrameWork> frameWorks = frameWorkRepository.findAll();
-		List<GetAllFrameWorksResponse> frameWorksResponse = new ArrayList<GetAllFrameWorksResponse>();
-		for (FrameWork frameWork : frameWorks) {
-			GetAllFrameWorksResponse responseItem = new GetAllFrameWorksResponse();
-			responseItem.setId(frameWork.getId());
-			responseItem.setName(frameWork.getName());
-			responseItem.setLanguageId(frameWork.getLanguage().getId());
-			frameWorksResponse.add(responseItem);
-		}
+		List<GetAllFrameWorksResponse> frameWorksResponse = frameWorks.stream()
+				.map(frameWork -> mapperService.forResponse().map(frameWork, GetAllFrameWorksResponse.class))
+				.collect(Collectors.toList());
 		return frameWorksResponse;
 	}
 
 	@Override
 	public void add(CreateFrameWorkRequest createFrameWorkRequest) {
-		FrameWork frameWork = new FrameWork();
-		frameWork.setName(createFrameWorkRequest.getName());
-		for (Language language : languageRepository.findAll()) {
-			if (createFrameWorkRequest.getLanguageId() == language.getId()) {
-				frameWork.setLanguage(language);
-			}
-		}
+		frameWorkBusinessRules.checkIfFrameWorkNameExists(createFrameWorkRequest.getName());
+		FrameWork frameWork = mapperService.forRequest().map(createFrameWorkRequest, FrameWork.class);
 		frameWorkRepository.save(frameWork);
 	}
 
@@ -57,22 +47,18 @@ public class FrameWorkManager implements FrameWorkService {
 	}
 
 	@Override
-	public void update(FrameWork exFrameWorks, FrameWork newFrameWorks) {
-		// TODO Auto-generated method stub
-
+	public void update(UpdateFrameWorkRequest updateFrameWorkRequest) {
+		frameWorkBusinessRules.checkIfFrameWorkNameExists(updateFrameWorkRequest.getName());
+		FrameWork frameWork = mapperService.forRequest().map(updateFrameWorkRequest, FrameWork.class);
+		frameWorkRepository.save(frameWork);
 	}
 
 	@Override
-	public GetAllFrameWorksResponse getById(int id) {
-		List<FrameWork> frameWorks = frameWorkRepository.findAll();
-		GetAllFrameWorksResponse frameWorksResponse = new GetAllFrameWorksResponse();
-		for (FrameWork frameWork : frameWorks) {
-			if (frameWork.getId() == id) {
-				frameWorksResponse.setId(frameWork.getId());
-				frameWorksResponse.setName(frameWork.getName());
-			}
-		}
-		return frameWorksResponse;
+	public GetByIdFrameWorksResponse getById(int id) {
+		FrameWork frameWork = frameWorkRepository.findById(id).orElseThrow();
+		GetByIdFrameWorksResponse getByIdFrameWorksResponse = mapperService.forResponse().map(frameWork,
+				GetByIdFrameWorksResponse.class);
+		return getByIdFrameWorksResponse;
 	}
 
 }

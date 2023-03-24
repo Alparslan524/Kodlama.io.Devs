@@ -20,17 +20,14 @@ import lombok.NoArgsConstructor;
 public class FrameWork {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "framworkId")
+	@Column(name = "id")
 	private int id;
 
 	@Column(name = "name")
 	private String name;
 
 	@ManyToOne
-	@JoinColumn(name = "languageId", nullable = false)
+	@JoinColumn(name = "language_id")
 	private Language language;
 
-//	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//	@JoinColumn(name = "id", nullable = false)
-//	private Language language;
 }
